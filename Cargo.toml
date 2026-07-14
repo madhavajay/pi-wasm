@@ -1,0 +1,4 @@
+[workspace]
+members = ["crates/pi-browser"]
+exclude = ["pi_agent_rust"]
+resolver = "3"

@@ -1,0 +1,12 @@
+{
+  "name": "pi-wasm",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:live": "node tests/e2e/run-live-provider.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0"
+  }
+}

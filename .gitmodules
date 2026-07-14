@@ -1,0 +1,3 @@
+[submodule "pi_agent_rust"]
+	path = pi_agent_rust
+	url = git@github.com:madhavajay/pi_agent_rust.git

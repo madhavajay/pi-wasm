@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pi WASM Prototype</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="topbar">
+        <div>
+          <h1>Pi WASM</h1>
+          <p>Browser-only agent prototype with pasted-token auth lane and fake tools.</p>
+        </div>
+        <div class="status" id="status">loading wasm</div>
+      </section>
+
+      <section class="panel auth-panel">
+        <label>
+          Provider
+          <select id="provider">
+            <option value="openai">OpenAI Platform</option>
+            <option value="openai-codex" selected>OpenAI Codex</option>
+          </select>
+        </label>
+        <label>
+          Storage
+          <select id="storage-mode">
+            <option value="memory">Memory only</option>
+            <option value="session" selected>Session tab</option>
+            <option value="local">Local browser</option>
+            <option value="indexeddb">IndexedDB</option>
+          </select>
+        </label>
+        <label>
+          Token
+          <input id="token" type="password" autocomplete="off" placeholder="Paste Codex/OpenAI bearer token or API key" />
+        </label>
+        <label>
+          Endpoint
+          <input id="endpoint" value="/proxy/codex/responses" />
+        </label>
+        <label>
+          Model
+          <input id="model" value="gpt-5.5" />
+        </label>
+        <label id="direct-credential-label" class="checkbox-label" title="Required before Send can use a pasted token from this origin with browser fetch.">
+          <input id="allow-direct-credentials" type="checkbox" />
+          Send token from this browser
+        </label>
+        <div class="actions">
+          <button id="save-auth">Save</button>
+          <button id="clear-auth">Clear</button>
+        </div>
+        <div class="run-state" id="run-state">Paste a token and enable browser sending to chat.</div>
+      </section>
+      <section class="notice">
+        Tokens are used directly from this browser page. Memory or session storage is preferred. Local browser storage persists after the tab closes.
+      </section>
+
+      <nav class="tabs" aria-label="View">
+        <button class="tab active" id="chat-tab" type="button" aria-controls="chat-view" aria-selected="true">Chat</button>
+        <button class="tab" id="debug-tab" type="button" aria-controls="debug-view" aria-selected="false">Debug</button>
+      </nav>
+
+      <section class="chat-view" id="chat-view">
+        <div class="chat-log" id="chat-log" aria-live="polite"></div>
+        <section class="composer">
+          <textarea id="prompt" rows="3" placeholder="Message gpt-5.5 via Pi Codex"></textarea>
+          <div class="composer-actions">
+            <button id="send-real">Send</button>
+            <button id="cancel">Cancel</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="debug-view hidden" id="debug-view">
+        <div class="debug-actions">
+          <button id="draft-request">Draft request</button>
+          <button id="list-models">Models</button>
+          <button id="generate-pkce">PKCE</button>
+          <button id="token-help">Token help</button>
+        </div>
+        <section class="terminal" id="terminal" aria-live="polite"></section>
+      </section>
+    </main>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

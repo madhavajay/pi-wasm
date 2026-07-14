@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pi WASM Auth Callback</title>
+    <link rel="icon" href="data:," />
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+        background: #111315;
+        color: #edf0e8;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      main {
+        width: min(720px, 100%);
+        border: 1px solid #333a3f;
+        border-radius: 8px;
+        background: #1b1f22;
+        padding: 18px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: 18px;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        margin: 0;
+        color: #a9b0aa;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Auth Callback Captured</h1>
+      <pre id="result">reading callback</pre>
+    </main>
+    <script>
+      const params = new URLSearchParams(window.location.search || window.location.hash.slice(1));
+      const payload = {
+        codePresent: params.has("code"),
+        state: params.get("state") || "",
+        error: params.get("error") || "",
+        errorDescription: params.get("error_description") || "",
+        capturedAt: new Date().toISOString(),
+      };
+
+      if (params.has("code")) {
+        sessionStorage.setItem("piWasm.pkceCode", params.get("code"));
+      }
+      sessionStorage.setItem("piWasm.pkceCallback", JSON.stringify(payload));
+
+      document.querySelector("#result").textContent = JSON.stringify(
+        {
+          ...payload,
+          code: params.has("code") ? "<stored in sessionStorage>" : "<missing>",
+        },
+        null,
+        2
+      );
+    </script>
+  </body>
+</html>
